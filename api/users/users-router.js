@@ -49,14 +49,18 @@ router.put(
   }
 );
 
-router.delete("/:id", validateUserId, async (req, res) => {
-  try {
-    const result = await User.remove(req.params.id);
-    res.json(result);
-  } catch (err) {
-    next(err);
+router.delete(
+  "/:id",
+  validateUserId,
+  async (req, res, next) => {
+    try {
+      await User.remove(req.params.id);
+      res.json(req.user);
+    } catch (err) {
+      next(err);
+    }
   }
-});
+);
 
 router.get("/:id/posts", validateUserId, (req, res) => {
   // RETURN THE ARRAY OF USER POSTS
